@@ -132,14 +132,20 @@ def generate_project_labels(project: Dict, labels: list) -> Tuple[str, int]:
         if label_info.image and label_info.name:
             labels_text_length += len(label_info.name) + IMAGE_LABEL_LENGTH
 
-            label_md = '<code><img src="{image}" style="display:inline;" width="13" height="13">{name}</code>'.format(
-                image=label_info.image, name=label_info.name
+            image = label_info.image
+            if image.startswith('http'):
+                image = '<img src="{}" style="display:inline;" width="13" height="13">'.format(image)
+            label_md = '<code>{image} {name}</code>'.format(
+                image=image, name=label_info.name
             )
         elif label_info.image:
             labels_text_length += IMAGE_LABEL_LENGTH
 
-            label_md = '<code><img src="{image}" style="display:inline;" width="13" height="13"></code>'.format(
-                image=label_info.image
+            image = label_info.image
+            if image.startswith('http'):
+                image = '<img src="{}" style="display:inline;" width="13" height="13">'.format(image)
+            label_md = '<code>{image}</code>'.format(
+                image=image
             )
         elif label_info.name:
             labels_text_length += len(label_info.name)
@@ -471,8 +477,11 @@ def generate_legend(configuration: Dict, labels: list, heading_level: int = 2) -
                 continue
             # Add image labels to explanations
             if label_info.image and label_info.description:
-                legend_md += '- <img src="{image}" style="display:inline;" width="13" height="13">&nbsp; {description}\n'.format(
-                    image=label_info.image, description=label_info.description
+                image = label_info.image
+                if image.startswith('http'):
+                    image = '<img src="{image}" style="display:inline;" width="13" height="13">'.format(image=image)
+                legend_md += '- {image}&nbsp; {description}\n'.format(
+                    image=image, description=label_info.description
                 )
 
     return legend_md + "\n"

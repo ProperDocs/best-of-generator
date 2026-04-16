@@ -230,7 +230,7 @@ def generate_project_body(project: Dict, configuration: Dict, labels: list) -> s
         body_md = "\n\n" + body_md
         return body_md
 
-    properdocs_prefix, properdocs_body = properdocs_integration.ProperDocsIntegration.generate_md_details(project, configuration)
+    properdocs_prefix, properdocs_body = properdocs_integration.generate_md_details(project, configuration)
     body_md += properdocs_prefix
 
     if project.github_id:

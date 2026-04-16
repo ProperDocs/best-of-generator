@@ -52,7 +52,11 @@ def parse_projects_yaml(
     labels = parsed_yaml["labels"] if "labels" in parsed_yaml else []
 
     if not labels:
-        labels = []
+        labels = [
+            {"label": "plugin", "image": "📎", "description": "MkDocs plugin"},
+            {"label": "theme", "image": "🎨", "description": "MkDocs theme"},
+            {"label": "markdown", "image": "🧩", "description": "Markdown extension(s)"},
+        ]
 
     return config, projects, categories, labels
 

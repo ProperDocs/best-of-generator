@@ -13,11 +13,17 @@ ENV_LIBRARIES_API_KEY = "LIBRARIES_API_KEY"
 def prepare_configuration(cfg: dict) -> Dict:
     config = Dict(cfg)
 
+    if "markdown_header_file" not in config:
+        config.markdown_header_file = "config/header.md"
+
+    if "markdown_footer_file" not in config:
+        config.markdown_footer_file = "config/footer.md"
+
     if "project_inactive_months" not in config:
-        config.project_inactive_months = 6
+        config.project_inactive_months = 12
 
     if "project_dead_months" not in config:
-        config.project_dead_months = 12
+        config.project_dead_months = 36
 
     if "project_new_months" not in config:
         config.project_new_months = 6
@@ -55,7 +61,7 @@ def prepare_configuration(cfg: dict) -> Dict:
         config.hide_empty_categories = False
 
     if "max_description_length" not in config:
-        config.max_description_length = 100
+        config.max_description_length = 1000
 
     if "ascii_description" not in config:
         config.ascii_description = True

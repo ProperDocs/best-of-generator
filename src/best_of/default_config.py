@@ -22,18 +22,6 @@ def prepare_configuration(cfg: dict) -> Dict:
     if "project_new_months" not in config:
         config.project_new_months = 6
 
-    if "min_projectrank" not in config:
-        config.min_projectrank = 10
-
-    if "min_stars" not in config:
-        config.min_stars = 100
-
-    if "require_license" not in config:
-        config.require_license = True
-
-    if "require_repo" not in config:
-        config.require_repo = False
-
     if "output_file" not in config:
         config.output_file = "README.md"
 
@@ -69,9 +57,6 @@ def prepare_configuration(cfg: dict) -> Dict:
     if "max_description_length" not in config:
         config.max_description_length = 100
 
-    if "min_description_length" not in config:
-        config.min_description_length = MIN_PROJECT_DESC_LENGTH
-
     if "ascii_description" not in config:
         config.ascii_description = True
 
@@ -89,13 +74,6 @@ def prepare_configuration(cfg: dict) -> Dict:
 
     if "output_generator" not in config:
         config.output_generator = "markdown-list"
-
-    if "allowed_licenses" not in config:
-        config.allowed_licenses = []
-        from best_of.license import LICENSES
-
-        for license in LICENSES:
-            config.allowed_licenses.append(license["spdx_id"])
 
     return config
 

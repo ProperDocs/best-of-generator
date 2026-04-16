@@ -232,12 +232,6 @@ def categorize_projects(projects: list, categories: OrderedDict) -> None:
             log.info("A project name is required. Ignoring project.")
             continue
 
-        if not project.homepage:
-            log.info(
-                "A project homepage is required. Ignoring project: " + project.name
-            )
-            continue
-
         if project.group_id and not project.group:
             # Project is a grouped project -> should not be shown
             if not categories[project.category].grouped_projects:
@@ -399,94 +393,6 @@ def apply_filters(project_info: Dict, configuration: Dict) -> None:
         log.info("Could not find a valid name" + str(project_info))
         project_info.show = False
         return
-
-    if not project_info.homepage:
-        log.info(f"Could not find a valid homepage for {project_info.name}")
-        project_info.show = False
-
-    if project_info.resource:
-        # Always show resources
-        project_info.show = True
-        return
-
-    desc_length = 0 if not project_info.description else len(project_info.description)
-    if desc_length < int(configuration.min_description_length):
-        log.info(
-            f"A project description is required with atleast {int(configuration.min_description_length)} chars. The project {project_info.name} will be hidden."
-        )
-        project_info.show = False
-
-    # Do not show if project projectrank less than min_projectrank
-    if (
-        configuration.min_projectrank
-        and project_info.projectrank
-        and int(project_info.projectrank) < int(configuration.min_projectrank)
-    ):
-        project_info.show = False
-
-    # Do not show if project stars less than min_stars
-    if (
-        configuration.min_stars
-        and project_info.star_count
-        and int(project_info.star_count) < int(configuration.min_stars)
-    ):
-        project_info.show = False
-
-    # Check platform requires
-    if configuration.require_repo and not (
-        project_info.github_url or project_info.gitlab_url
-    ):
-        log.info(
-            f"{project_info.name} requires a repo url (e.g. GitHub or GitLab), but no repo url found."
-        )
-        project_info.show = False
-
-    # TODO: also support other package managers as requirement
-    # if configuration.require_pypi and not project_info.pypi_url:
-    #    project_info.show = False
-
-    # Do not show if license was not found
-    if not project_info.license and configuration.require_license:
-        log.info(f"Unable to detect a licenses for {project_info.name}")
-        project_info.show = False
-
-    # Do not show if license is not in allowed_licenses
-    if configuration.allowed_licenses and project_info.license:
-        project_license = utils.simplify_str(project_info.license)
-        project_license_metadata = get_license(project_info.license)
-        if project_license_metadata:
-            project_license = utils.simplify_str(project_license_metadata["spdx_id"])
-
-        allowed_licenses = [
-            utils.simplify_str(license) for license in configuration.allowed_licenses
-        ]
-        for license in configuration.allowed_licenses:
-            license_metadata = get_license(license)
-            if license_metadata:
-                allowed_licenses.append(utils.simplify_str(license_metadata["spdx_id"]))
-
-        if project_license not in set(allowed_licenses) and "all" not in set(
-            allowed_licenses
-        ):
-            project_info.show = False
-
-    # Do not show if project is dead
-    project_inactive_month = None
-    if project_info.last_commit_pushed_at:
-        project_inactive_month = utils.diff_month(
-            datetime.now(), project_info.last_commit_pushed_at
-        )
-    elif project_info.updated_at:
-        project_inactive_month = utils.diff_month(
-            datetime.now(), project_info.updated_at
-        )
-
-    if (
-        project_inactive_month
-        and configuration.project_dead_months
-        and int(configuration.project_dead_months) < project_inactive_month
-    ):
-        project_info.show = False
 
 
 def calc_grouped_metrics(projects: list, config: Dict) -> None:

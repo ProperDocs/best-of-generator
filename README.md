@@ -10,7 +10,7 @@
 <p align="center">
     <a href="https://best-of.org" title="Best-of Badge"><img src="http://bit.ly/3o3EHNN"></a>
     <a href="https://pypi.org/project/best-of/" title="PyPi Version"><img src="https://img.shields.io/pypi/v/best-of?color=green&style=flat"></a>
-    <a href="https://github.com/best-of-lists/best-of-generator/actions?query=workflow%3Abuild-pipeline" title="Build status"><img src="https://img.shields.io/github/workflow/status/best-of-lists/best-of-generator/build-pipeline?style=flat"></a>
+    <a href="https://github.com/best-of-lists/best-of-generator/actions?query=workflow%3Abuild-pipeline" title="Build status"><img src="https://img.shields.io/github/actions/workflow/status/best-of-lists/best-of-generator/build-pipeline.yml?style=flat"></a>
     <a href="https://gitter.im/ml-tooling/best-of" title="Chat on Gitter"><img src="https://badges.gitter.im/ml-tooling/best-of.svg"></a>
     <a href="https://bestoflists.substack.com/subscribe" title="Subscribe for updates"><img src="http://bit.ly/2Md9rxM"></a>
     <a href="https://twitter.com/best_of_lists" title="Best-of on Twitter"><img src="https://img.shields.io/twitter/follow/best_of_lists.svg?style=social&label=Follow"></a>
@@ -256,6 +256,10 @@ Every project can also be expanded to show additional project information (by cl
         <td><code>gitlab_id</code></td>
         <td>GitLab ID of the project based on user or organization  and the repository name, e.g. <code>best-of-lists/best-of-generator</code>.</td>
     </tr>
+    <tr>
+        <td><code>greasy_fork_id</code></td>
+        <td>Greasy Fork ID of the project. This is the number in script's URL, e.g. <code>299792458</code> for <code>https://greasyfork.org/scripts/299792458-speed-of-light</code>. If set, homepage and description on Greasy Fork will take precedence over those on GitHub.</td>
+    </tr>
 </table>
 
 While you can theoretically overwrite all project metadata, we suggest to only set the properties which the best-of generator is not able to find on GitHub or the configured package managers. There are also other undocumented properties, but for most projects those properties should not be overwritten.
@@ -473,7 +477,7 @@ The configuration example above changes the default configuration to show all pr
     </tr>
     <tr>
         <td><code>min_stars</code></td>
-        <td>Project will be hidden if it has a less stars on GitHub.</td>
+        <td>Projects with fewer stars than the specified threshold will be hidden.</td>
         <td><code>100</code></td>
     </tr>
     <tr>
@@ -592,6 +596,7 @@ All projects in a best-of list are ranked and sorted by a project-quality score 
   - Number of dependent projects: `+ log(COUNT / 1.5)`
   - Number of watchers: `+ log(COUNT / 2) - 1`
   - Number of closed issues: `+ log(COUNT / 2) - 1`
+  - Greasy Fork fan score: `+ log(COUNT / 2) - 1`
 
 ### Trending Projects
 

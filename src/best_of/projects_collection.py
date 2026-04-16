@@ -11,7 +11,7 @@ from addict import Dict
 from tqdm import tqdm
 
 from best_of import default_config, integrations, utils
-from best_of.integrations import github_integration
+from best_of.integrations import github_integration, properdocs_integration
 from best_of.license import get_license
 
 log = logging.getLogger(__name__)
@@ -566,6 +566,7 @@ def collect_projects_info(
 
         for package_manager in integrations.AVAILABLE_PACKAGE_MANAGER:
             package_manager.update_project_info(project_info)
+        properdocs_integration.update_project_info(project_info)
 
         if not project_info.description:
             project_info.description = ""

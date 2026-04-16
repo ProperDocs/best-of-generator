@@ -8,6 +8,21 @@ def _get_as_list(mapping, key):
     return names
 
 
+_kinds_to_label = {
+    "properdocs_theme": "theme",
+    "mkdocs_theme": "theme",
+    "properdocs_plugin": "plugin",
+    "mkdocs_plugin": "plugin",
+    "markdown_extension": "markdown",
+}
+
+
+def update_project_info(project_info: Dict) -> None:
+    for kind, label in _kinds_to_label.items():
+        if kind in project_info:
+            project_info.setdefault("labels", []).append(label)
+
+
 def generate_md_details(project: Dict, configuration: Dict):
     if not configuration.generate_install_hints:
         return "", ""

@@ -620,25 +620,6 @@ class MarkdownListGenerator(BaseGenerator):
     ) -> None:
         markdown = generate_md(categories=categories, config=config, labels=labels)
 
-        changes_md = generate_changes_md(projects, config, labels)
-
-        if config.projects_history_folder:
-            changes_md_file_name = datetime.today().strftime("%Y-%m-%d") + "_changes.md"
-            # write to history folder
-            with open(
-                os.path.join(config.projects_history_folder, changes_md_file_name), "w"
-            ) as f:
-                f.write(changes_md)
-
-        # write changes to working directory
-        with open(
-            os.path.join(
-                os.path.dirname(config.output_file), default_config.LATEST_CHANGES_FILE
-            ),
-            "w",
-        ) as f:
-            f.write(changes_md)
-
         # Write markdown to file
         with open(config.output_file, "w") as f:
             f.write(markdown)

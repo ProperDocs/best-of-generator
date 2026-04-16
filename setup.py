@@ -58,7 +58,6 @@ setup(
         "beautifulsoup4",
         "PyYAML",
         "python-dateutil",
-        "httpx",
     ],
     # deprecated: dependency_links=dependency_links,
     extras_require={

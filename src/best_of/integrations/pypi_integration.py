@@ -4,8 +4,6 @@ import time
 
 import pypistats
 from addict import Dict
-from httpx import HTTPStatusError
-from requests.exceptions import HTTPError
 
 from best_of import utils
 from best_of.integrations import libio_integration
@@ -87,7 +85,7 @@ class PypiIntegration(BaseIntegration):
         # pypi stats limit is 30 per minute: https://github.com/crflynn/pypistats.org/issues/28#issuecomment-598417650
         # So, we try 10 times
         MAX_TRIES = 10
-        for i in range(1, MAX_TRIES):
+        for i in range(1, MAX_TRIES + 1):
             try:
                 # get download count from pypi stats
                 project_info.pypi_monthly_downloads = int(
@@ -105,29 +103,13 @@ class PypiIntegration(BaseIntegration):
                     project_info.pypi_monthly_downloads
                 )
                 return
-            except (HTTPError, HTTPStatusError) as ex:
-                if ex.response.status_code == 429:
-                    sleep_time = 2 * i
-                    log.info(
-                        f"Too many requests to pypistats (429). Sleep for {sleep_time} seconds and try again."
-                    )
-                    # wait for an increasing time
-                    time.sleep(sleep_time)
-                    continue
-                else:
-                    log.info(
-                        f"Unable to request statistics from pypi: {project_info.pypi_id} ({ex.response.status_code})"
-                    )
-                    return
-            except Exception as ex:
+            except Exception:
+                if i == MAX_TRIES:
+                    raise
+                sleep_time = 5 * i
                 log.warning(
-                    "Unable to request statistics from pypi (unexpected exception): "
-                    + project_info.pypi_id,
-                    exc_info=ex,
+                    f"Failed request to pypistats. Sleep for {sleep_time} seconds and try again.",
+                    exc_info=True
                 )
-                return
-
-        log.warning(
-            f"Unable to request statistics from pypi after {MAX_TRIES} tries: "
-            + project_info.pypi_id
-        )
+                # wait for an increasing time
+                time.sleep(sleep_time)

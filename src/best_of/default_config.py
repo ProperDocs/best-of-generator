@@ -5,7 +5,7 @@ from addict import Dict
 DEFAULT_OTHERS_CATEGORY_ID = "others"
 MIN_PROJECT_DESC_LENGTH = 10
 RECENT_ACTIVITY_DAYS = 90
-UP_ARROW_IMAGE = "https://git.io/JtehR"
+UP_ARROW_IMAGE = "https://raw.githubusercontent.com/properdocs/best-of-generator/main/assets/up-arrow.png"
 LATEST_CHANGES_FILE = "latest-changes.md"
 ENV_LIBRARIES_API_KEY = "LIBRARIES_API_KEY"
 

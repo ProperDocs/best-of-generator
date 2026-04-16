@@ -10,7 +10,7 @@ from addict import Dict
 
 from best_of import default_config, integrations, utils
 from best_of.generators.base_generator import BaseGenerator
-from best_of.integrations import github_integration, mkdocs_integration
+from best_of.integrations import github_integration, properdocs_integration
 from best_of.license import get_license
 
 log = logging.getLogger(__name__)
@@ -224,8 +224,8 @@ def generate_project_body(project: Dict, configuration: Dict, labels: list) -> s
         body_md = "\n\n" + body_md
         return body_md
 
-    mkdocs_prefix, mkdocs_body = mkdocs_integration.MkDocsIntegration.generate_md_details(project, configuration)
-    body_md += mkdocs_prefix
+    properdocs_prefix, properdocs_body = properdocs_integration.ProperDocsIntegration.generate_md_details(project, configuration)
+    body_md += properdocs_prefix
 
     if project.github_id:
         body_md += github_integration.generate_github_details(project, configuration)
@@ -235,7 +235,7 @@ def generate_project_body(project: Dict, configuration: Dict, labels: list) -> s
         if package_manager_id in project and project[package_manager_id]:
             body_md += package_manager.generate_md_details(project, configuration)
 
-    body_md += mkdocs_body
+    body_md += properdocs_body
 
     if not body_md:
         # show message if no information is available

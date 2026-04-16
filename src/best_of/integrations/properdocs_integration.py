@@ -8,14 +8,14 @@ def _get_as_list(mapping, key):
     return names
 
 
-class MkDocsIntegration:
+class ProperDocsIntegration:
     @staticmethod
     def generate_md_details(project: Dict, configuration: Dict):
         if not configuration.generate_install_hints:
             return "", ""
 
-        themes = _get_as_list(project, "mkdocs_theme")
-        plugins = _get_as_list(project, "mkdocs_plugin")
+        themes = _get_as_list(project, "properdocs_theme") or _get_as_list(project, "mkdocs_theme")
+        plugins = _get_as_list(project, "properdocs_plugin") or _get_as_list(project, "mkdocs_plugin")
         extensions = _get_as_list(project, "markdown_extension")
 
         config_keys = []
@@ -37,7 +37,7 @@ class MkDocsIntegration:
 
         if not config_keys:
             return "", ""
-        url = f"https://www.mkdocs.org/user-guide/configuration/#{config_keys[0]}"
+        url = f"https://www.properdocs.org/user-guide/configuration/#{config_keys[0]}"
 
         if themes:
             prefix = (
@@ -49,7 +49,7 @@ class MkDocsIntegration:
             prefix = ""
 
         lines = [
-            f"Add to [mkdocs.yml]({url}):",
+            f"Add to [properdocs.yml]({url}):",
             "```yaml",
             *yml_main,
             "```",

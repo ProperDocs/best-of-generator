@@ -50,7 +50,7 @@ def generate_md_details(project: Dict, configuration: Dict):
 
     if not config_keys:
         return "", ""
-    url = f"https://www.properdocs.org/user-guide/configuration/#{config_keys[0]}"
+    url = f"https://properdocs.org/user-guide/configuration/#{config_keys[0]}"
 
     if themes:
         prefix = (
